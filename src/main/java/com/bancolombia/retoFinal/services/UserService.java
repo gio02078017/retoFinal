@@ -1,5 +1,7 @@
 package com.bancolombia.retoFinal.services;
 
+import com.bancolombia.retoFinal.config.ClientNotFoundException;
+import com.bancolombia.retoFinal.config.Exception400Exception;
 import com.bancolombia.retoFinal.models.User;
 import com.bancolombia.retoFinal.repositories.UserRepository;
 import com.bancolombia.retoFinal.services.interfaces.IUserService;
@@ -17,7 +19,7 @@ public class UserService implements IUserService {
 
     @Override
     public Mono<User> getUserPorId(String id) {
-        return userRepository.findById(id);
+        return userRepository.findById(id).switchIfEmpty(Mono.error(new ClientNotFoundException("El Usuario no existe")));
     }
 
     @Override

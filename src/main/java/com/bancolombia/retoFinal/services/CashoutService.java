@@ -11,6 +11,7 @@ import com.bancolombia.retoFinal.services.interfaces.IUserService;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.util.function.Tuple2;
 
 @Service
 public class CashoutService implements ICashoutService {
@@ -28,27 +29,29 @@ public class CashoutService implements ICashoutService {
     @Override
     public Mono<Cashout> createCashOut(Cashout cashout) {
         return userService.getUserPorId(cashout.getUserId())
-                .onErrorMap(throwable -> new ClientNotFoundException("Se debe crear el cliente anrtes de crear la poliza"))
+                //.onErrorMap(throwable -> new ClientNotFoundException("Se debe crear el cliente anrtes de crear la poliza"))
+                //.onErrorMap(throwable)
                 .doOnNext(user -> System.out.println("Nombre del cliente = "+user.getName()))
                 .doOnError(throwable -> System.out.println("Se genero un problema "+throwable.getMessage()))
                 .filter(user -> user.getBalance() >= cashout.getAmount())
+                .switchIfEmpty(Mono.error(new Exception400Exception("saldo insuficiente")))
                 .flatMap(user ->
                     auxiliaryRestClient.createPayment(
                                     new Payment(cashout.getUserId(), cashout.getAmount())
-                            )
-                            .flatMap(payment -> {
+                            )//.zipWhen(Mono.just(user))
+                            .zipWith(Mono.just(user))
+                            /*.flatMap(payment -> {
                                        if(payment.getPaymentStatus()){
                                            return Mono.just(user);
                                        }
                                        return Mono.empty();
-                                    })
-
-
-
+                                    })*/
                 )
-                .flatMap(existingUser -> {
-                    existingUser.setBalance(existingUser.getBalance() - cashout.getAmount());
-                    return userService.updateUser(existingUser);
+                .filter(tupla  -> tupla.getT1().getPaymentStatus().equals(Boolean.TRUE))
+                .switchIfEmpty(Mono.error(new Exception400Exception("el pago no fue aprovado")))
+                .flatMap(tupla -> {
+                    tupla.getT2().setBalance(tupla.getT2().getBalance() - cashout.getAmount());
+                    return userService.updateUser(tupla.getT2());
                 })
                 .flatMap( user -> user != null ? cashoutRepository.save(cashout) : Mono.empty())
                 .switchIfEmpty(Mono.error(new Exception400Exception("Creacion Fallida")));

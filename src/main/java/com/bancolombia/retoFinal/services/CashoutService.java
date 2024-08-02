@@ -12,6 +12,9 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.util.function.Tuple2;
+import reactor.util.retry.Retry;
+
+import java.time.Duration;
 
 @Service
 public class CashoutService implements ICashoutService {
@@ -37,10 +40,25 @@ public class CashoutService implements ICashoutService {
                     auxiliaryRestClient.createPayment(
                                     new Payment(cashout.getUserId(), cashout.getAmount())
                             )
+                            /*.doOnNext(payment -> System.out.println("Payment Status "+payment.getPaymentStatus().toString()))
+                            .map(payment -> payment.getPaymentStatus().equals("Approved"))*/
+                            .filter(payment -> payment.getPaymentStatus().equals("Approved"))
+                            .switchIfEmpty(Mono.error(new Exception400Exception("El pago no fue aprovado")))
+                            .doOnNext(mensaje -> System.out.println("mensaje "+mensaje))
+                            .retryWhen(Retry.backoff(3, Duration.ofSeconds(1))
+                                    .doBeforeRetry(mensaje -> System.out.println("mensaje Before Retry "+ mensaje))
+                                    .filter(error -> !(error instanceof Exception400Exception))
+                                    .doAfterRetry(mensaje -> System.out.println("mensaje After Retry "+ mensaje))
+                            )
+                            .doOnError(throwable -> System.out.println("Se genero un problema "+throwable.getMessage()))
+                            .flatMap(resultado -> {
+                                System.out.println("ultimo flagMap "+resultado);
+                                return Mono.just(resultado);
+                            })
                             .zipWith(Mono.just(user))
                 )
-                .filter(tupla  -> tupla.getT1().getPaymentStatus().equals(Boolean.TRUE))
-                .switchIfEmpty(Mono.error(new Exception400Exception("el pago no fue aprovado")))
+                /*.filter(tupla  -> tupla.getT1().getPaymentStatus().equals("Approved"))
+                .switchIfEmpty(Mono.error(new Exception400Exception("el pago no fue aprovado")))*/
                 .flatMap(tupla -> {
                     tupla.getT2().setBalance(tupla.getT2().getBalance() - cashout.getAmount());
                     return userService.updateUser(tupla.getT2());

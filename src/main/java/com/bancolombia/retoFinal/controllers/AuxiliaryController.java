@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.Random;
+
 @RestController
 @RequestMapping("/auxiliary")
 public class AuxiliaryController {
@@ -24,11 +26,11 @@ public class AuxiliaryController {
     @PostMapping("/payments")
     @ResponseStatus(HttpStatus.CREATED)
     public Mono<Payment> createCliente(@RequestBody Payment payment) {
-        payment.setPaymentStatus(false);
-        if(payment.getAmount() <= 200){
-            payment.setPaymentStatus(true);
-        }
-
+        var random = new Random();
+        int randomIndex = random.nextInt(2);
+        payment.setPaymentStatus(randomIndex == 0 ? "Approved" : "Rejected");
+        //payment.setPaymentStatus("Rejected");
+        System.out.println("resultado payment service "+ payment);
         return Mono.just(payment);
     }
 

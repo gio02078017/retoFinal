@@ -3,7 +3,7 @@ package com.bancolombia.retoFinal.models;
 public class Payment {
     private String userId;
     private Double amount;
-    private Boolean paymentStatus;
+    private String paymentStatus;
 
 
     public Payment(String userId, Double amount) {
@@ -27,13 +27,20 @@ public class Payment {
         this.amount = amount;
     }
 
-    public Boolean getPaymentStatus() {
+    public String getPaymentStatus() {
         return paymentStatus;
     }
 
-    public void setPaymentStatus(Boolean paymentStatus) {
+    public void setPaymentStatus(String paymentStatus) {
         this.paymentStatus = paymentStatus;
     }
 
-
+    @Override
+    public String toString() {
+        return "Payment{" +
+                "userId='" + userId + '\'' +
+                ", amount=" + amount +
+                ", paymentStatus='" + paymentStatus + '\'' +
+                '}';
+    }
 }

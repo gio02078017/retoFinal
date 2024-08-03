@@ -30,10 +30,10 @@ public class CashoutControllerTest {
     @MockBean
     private ICashoutService cashoutService;
 
-    static Cashout cashout;
+    Cashout cashout;
 
-    @BeforeAll
-    public static void setup(){
+    @BeforeEach
+    public void setup(){
         cashout = new Cashout();
         cashout.setId("0000000000000");
         cashout.setUserId("0000000000000111");

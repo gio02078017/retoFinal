@@ -40,8 +40,6 @@ public class CashoutService implements ICashoutService {
                     auxiliaryRestClient.createPayment(
                                     new Payment(cashout.getUserId(), cashout.getAmount())
                             )
-                            /*.doOnNext(payment -> System.out.println("Payment Status "+payment.getPaymentStatus().toString()))
-                            .map(payment -> payment.getPaymentStatus().equals("Approved"))*/
                             .filter(payment -> payment.getPaymentStatus().equals("Approved"))
                             .switchIfEmpty(Mono.error(new Exception400Exception("El pago no fue aprovado")))
                             .doOnNext(mensaje -> System.out.println("mensaje "+mensaje))
@@ -57,8 +55,6 @@ public class CashoutService implements ICashoutService {
                             })
                             .zipWith(Mono.just(user))
                 )
-                /*.filter(tupla  -> tupla.getT1().getPaymentStatus().equals("Approved"))
-                .switchIfEmpty(Mono.error(new Exception400Exception("el pago no fue aprovado")))*/
                 .flatMap(tupla -> {
                     tupla.getT2().setBalance(tupla.getT2().getBalance() - cashout.getAmount());
                     return userService.updateUser(tupla.getT2());

@@ -39,10 +39,10 @@ public class UserControllerTest {
     private static final AtomicLong userId = new AtomicLong();
     //private static  final Atom
 
-    static User newUser;
+    User newUser;
 
-    @BeforeAll
-    public static void setup(){
+    @BeforeEach
+    public void setup(){
         newUser = new User();
         newUser.setName("Reto Final");
         newUser.setBalance(500.0);

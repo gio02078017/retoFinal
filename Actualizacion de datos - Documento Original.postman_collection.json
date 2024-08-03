@@ -1,0 +1,269 @@
+{
+	"info": {
+		"_postman_id": "154786b8-a54d-469f-a2cd-64757b5334ce",
+		"name": "RetoFinalWebFlux",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "5095534",
+		"_collection_link": "https://gold-escape-184647.postman.co/workspace/Team-Workspace~dd8cb606-0915-4a06-8301-5c0d9fc9a5f7/collection/5095534-154786b8-a54d-469f-a2cd-64757b5334ce?action=share&source=collection_link&creator=5095534"
+	},
+	"item": [
+		{
+			"name": "RetoFinal",
+			"item": [
+				{
+					"name": "auxiliarController",
+					"item": [
+						{
+							"name": "getAuxiliar",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"prueba2\",\n    \"balance\": 100.0\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8085/auxiliary/transaction-history/user/66ad516ad8dc626dc603231c",
+									"host": [
+										"localhost"
+									],
+									"port": "8085",
+									"path": [
+										"auxiliary",
+										"transaction-history",
+										"user",
+										"66ad516ad8dc626dc603231c"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "postAuxiliar",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"userId\": \"66a8f03371a2476d99ad5cf9\",\n    \"amount\": 10\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8085/auxiliary/payments",
+									"host": [
+										"localhost"
+									],
+									"port": "8085",
+									"path": [
+										"auxiliary",
+										"payments"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "userController",
+					"item": [
+						{
+							"name": "getClient",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"nombre\": \"prueba2\",\n    \"correo\": \"prueba2@gmail.com\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8085/users",
+									"host": [
+										"localhost"
+									],
+									"port": "8085",
+									"path": [
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "postClient",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"prueba4\",\n    \"balance\": 100.0\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8085/users",
+									"host": [
+										"localhost"
+									],
+									"port": "8085",
+									"path": [
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "putClient",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"amount\": 400\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8085/users/66ad85938f92a47b06e79cad/balance",
+									"host": [
+										"localhost"
+									],
+									"port": "8085",
+									"path": [
+										"users",
+										"66ad85938f92a47b06e79cad",
+										"balance"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getClientId",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"nombre\": \"prueba2\",\n    \"correo\": \"prueba2@gmail.com\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8085/users/66ad83d2b3fbee42317a487d",
+									"host": [
+										"localhost"
+									],
+									"port": "8085",
+									"path": [
+										"users",
+										"66ad83d2b3fbee42317a487d"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "cashoutController",
+					"item": [
+						{
+							"name": "postCashout",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"userId\": \"66ad516ad8dc626dc603231c\",\n    \"amount\": 201\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8085/cashout/",
+									"host": [
+										"localhost"
+									],
+									"port": "8085",
+									"path": [
+										"cashout",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getCashoutUserId",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8085/cashout/user/66a8f03971a2476d99ad5cfa",
+									"host": [
+										"localhost"
+									],
+									"port": "8085",
+									"path": [
+										"cashout",
+										"user",
+										"66a8f03971a2476d99ad5cfa"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	]
+}

@@ -31,7 +31,7 @@ public class CashoutService implements ICashoutService {
 
     @Override
     public Mono<Cashout> createCashOut(Cashout cashout) {
-        return userService.getUserPorId(cashout.getUserId())
+        return userService.getUserById(cashout.getUserId())
                 .doOnNext(user -> System.out.println("Nombre del cliente = "+user.getName()))
                 .doOnError(throwable -> System.out.println("Se genero un problema "+throwable.getMessage()))
                 .filter(user -> user.getBalance() >= cashout.getAmount())
